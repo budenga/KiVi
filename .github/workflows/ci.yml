@@ -206,9 +206,12 @@ jobs:
 
   # Only for releases and manual runs, like the other builds. One universal
   # .dmg (Apple Silicon and Intel) from src-tauri/tauri.macos.conf.json, which
-  # Tauri merges on macOS. Not code-signed or notarised (that needs an Apple
-  # Developer account): the linker's ad-hoc signature is enough to run, and
-  # Gatekeeper asks once (System Settings → Privacy & Security → Open Anyway).
+  # Tauri merges on macOS. Not notarised (that needs an Apple Developer
+  # account), but ad-hoc signed as a whole bundle (signingIdentity "-" in that
+  # file): the linker's signature on the binary alone is "no usable signature"
+  # to macOS 26+, which then leaves the process frozen at start-up even after
+  # Open Anyway. With the bundle signed, Gatekeeper asks once (System Settings
+  # → Privacy & Security → Open Anyway) and the app runs.
   # CI=true (set by Actions) skips the Finder window styling in Tauri's
   # bundle_dmg.sh, which can leave the disk image busy. LICENSE and
   # THIRD-PARTY-NOTICES.md are inside the .app, like the AppImage.

@@ -490,8 +490,12 @@ cargo tauri build               # release + AppImage: src-tauri/target/release/b
   with the Xcode Command Line Tools. Tauri makes `KiVi.icns` from the PNGs, so
   there's no `.icns` in `icons/`. CI (`build-macos`, macos-26) runs
   `cargo tauri build --target universal-apple-darwin` (Apple Silicon + Intel)
-  and ships `KiVi_<version>_universal.dmg`, not code-signed or notarised (the
-  linker's ad-hoc signature only). Locally, `bundle_dmg.sh`'s Finder styling
+  and ships `KiVi_<version>_universal.dmg`, not notarised but ad-hoc signed as
+  a bundle (`signingIdentity: "-"`): with only the linker's signature on the
+  binary, macOS 26+ reports "no usable signature" and the process hangs at
+  `_dyld_start` with no window, even after Open Anyway (seen with v0.2.0;
+  `xattr -cr` plus `codesign --force --deep -s -` on the .app fixed it).
+  Locally, `bundle_dmg.sh`'s Finder styling
   can leave the image busy (`hdiutil: couldn't unmount … Resource busy`):
   `CI=true` skips it (Actions sets it). WebView data (localStorage,
   IndexedDB) lives in `~/Library/WebKit/app.kivi.desktop` for the `.app`, but

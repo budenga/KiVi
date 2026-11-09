@@ -169,7 +169,8 @@ lives only in KiVi:
    `KiVi_<version>_x64.exe` (run it; it isn't code-signed yet, so SmartScreen
    asks once: *More info* → *Run anyway*); on macOS `KiVi_<version>_universal.dmg`
    (drag KiVi to Applications; it isn't notarised yet, so the first time it's
-   blocked: *System Settings* → *Privacy & Security* → *Open Anyway*). Or
+   blocked: *System Settings* → *Privacy & Security* → *Open Anyway*; if it
+   still won't open, run `xattr -cr /Applications/KiVi.app` once). Or
    [build it](#building) yourself.
 2. **Add a public project.** In **Projects**, click **+** → **Remote
    project…** and enter `greatscottgadgets/hackrf` (the HackRF One software
